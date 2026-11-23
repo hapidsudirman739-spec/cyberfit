@@ -1,1 +1,902 @@
 
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CYBERFIT // TARGET 73KG</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Orbitron (Futuristic Header), JetBrains Mono (Data/Angka), Inter (UI) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&family=Orbitron:wght@600;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        cyber: ['Orbitron', 'sans-serif'],
+                    },
+                    colors: {
+                        cyber: {
+                            bg: '#05070e',
+                            card: '#0b1021',
+                            cardLight: '#111936',
+                            cyan: '#00f3ff',
+                            magenta: '#ff007f',
+                            lime: '#39ff14',
+                            amber: '#ffb703',
+                            danger: '#ff2a2a'
+                        }
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 12px rgba(0, 243, 255, 0.35), inset 0 0 8px rgba(0, 243, 255, 0.15)',
+                        'neon-magenta': '0 0 12px rgba(255, 0, 127, 0.35), inset 0 0 8px rgba(255, 0, 127, 0.15)',
+                        'neon-lime': '0 0 12px rgba(57, 255, 20, 0.35), inset 0 0 8px rgba(57, 255, 20, 0.15)',
+                        'neon-danger': '0 0 15px rgba(255, 42, 42, 0.5), inset 0 0 10px rgba(255, 42, 42, 0.2)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #05070e;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 243, 255, 0.06) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 127, 0.06) 0%, transparent 40%),
+                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 28px 28px, 28px 28px;
+            color: #e2e8f0;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05070e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
+        }
+
+        /* Animasi pulse glow halus */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .animate-glow {
+            animation: pulseGlow 2.5s infinite ease-in-out;
+        }
+
+        /* Efek garis scanline tipis pada header */
+        .cyber-border {
+            border: 1px solid rgba(0, 243, 255, 0.25);
+            position: relative;
+        }
+        .cyber-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 16px;
+            width: 40px;
+            height: 2px;
+            background: #00f3ff;
+            box-shadow: 0 0 8px #00f3ff;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 selection:bg-cyan-500 selection:text-black">
+
+    <!-- Toast Notification Container (Pengganti alert) -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none"></div>
+
+    <!-- Header Utama -->
+    <header class="sticky top-0 z-40 backdrop-blur-md bg-[#05070e]/85 border-b border-cyan-500/30 px-4 py-3">
+        <div class="max-w-3xl mx-auto flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-400 flex items-center justify-center shadow-neon-cyan">
+                    <i class="fa-solid fa-bolt text-cyan-400 text-lg animate-glow"></i>
+                </div>
+                <div>
+                    <h1 class="font-cyber text-base sm:text-lg font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-white to-pink-500">
+                        CYBERFIT // 73KG
+                    </h1>
+                    <p class="text-[11px] font-mono text-cyan-300/80">
+                        22 THN • 173 CM • TARGET LEBARAN 2027
+                    </p>
+                </div>
+            </div>
+            <div class="text-right">
+                <span id="current-date-badge" class="inline-block px-2.5 py-1 rounded-lg bg-slate-900 border border-pink-500/40 font-mono text-[11px] text-pink-400 shadow-neon-magenta">
+                    HARI INI
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Konten Utama -->
+    <main class="max-w-3xl mx-auto px-4 pt-5 space-y-6">
+
+        <!-- SECTION 1: HUD STATUS TRANSFORMASI & ESTIMASI KEBERHASILAN -->
+        <section class="rounded-2xl bg-[#0b1021]/90 cyber-border p-4 sm:p-5 shadow-neon-cyan">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#00f3ff]"></span>
+                    <h2 class="font-cyber text-xs sm:text-sm font-bold tracking-widest text-cyan-400 uppercase">
+                        STATUS MISI TRANSFORMASI
+                    </h2>
+                </div>
+                <span id="status-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold bg-lime-500/15 text-lime-400 border border-lime-400/40">
+                    ON TRACK • DEFISIT AKTIF
+                </span>
+            </div>
+
+            <!-- Grid Metrik Utama -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+                <!-- Berat Badan -->
+                <div class="rounded-xl bg-[#111936] border border-slate-700/70 p-3">
+                    <p class="text-[11px] text-slate-400 font-mono uppercase">Berat Badan</p>
+                    <div class="flex items-baseline gap-1 mt-1">
+                        <span id="hud-current-weight" class="font-mono text-xl sm:text-2xl font-extrabold text-white">92.0</span>
+                        <span class="text-xs font-mono text-cyan-400">kg</span>
+                    </div>
+                    <p class="text-[11px] font-mono text-slate-400 mt-1">Target: <span class="text-lime-400 font-bold">73.0 kg</span></p>
+                </div>
+
+                <!-- Lingkar Pinggang -->
+                <div class="rounded-xl bg-[#111936] border border-slate-700/70 p-3">
+                    <p class="text-[11px] text-slate-400 font-mono uppercase">Lingkar Pinggang</p>
+                    <div class="flex items-baseline gap-1 mt-1">
+                        <span id="hud-current-waist" class="font-mono text-xl sm:text-2xl font-extrabold text-white">43.0</span>
+                        <span class="text-xs font-mono text-pink-400">inci</span>
+                    </div>
+                    <p class="text-[11px] font-mono text-slate-400 mt-1">Target: <span class="text-lime-400 font-bold">31-32"</span></p>
+                </div>
+
+                <!-- Sisa Target Turun -->
+                <div class="rounded-xl bg-[#111936] border border-slate-700/70 p-3">
+                    <p class="text-[11px] text-slate-400 font-mono uppercase">Sisa Pangkas</p>
+                    <div class="flex items-baseline gap-1 mt-1">
+                        <span id="hud-remaining-kg" class="font-mono text-xl sm:text-2xl font-extrabold text-pink-400">19.0</span>
+                        <span class="text-xs font-mono text-slate-300">kg</span>
+                    </div>
+                    <p id="hud-lost-kg" class="text-[11px] font-mono text-cyan-300 mt-1">Turun: 0.0 kg</p>
+                </div>
+
+                <!-- Estimasi Tercapai -->
+                <div class="rounded-xl bg-[#111936] border border-slate-700/70 p-3">
+                    <p class="text-[11px] text-slate-400 font-mono uppercase">Estimasi Selesai</p>
+                    <div class="mt-1">
+                        <span id="hud-est-date" class="font-mono text-sm sm:text-base font-extrabold text-lime-400 block leading-tight">11 Mar 2027</span>
+                    </div>
+                    <p id="hud-est-weeks" class="text-[11px] font-mono text-slate-400 mt-1">~15.5 Minggu lagi</p>
+                </div>
+            </div>
+
+            <!-- Progress Bar Keberhasilan Total -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-end">
+                    <div>
+                        <span class="text-xs font-mono text-slate-300">PROGRES MENUJU 73 KG & SIXPACK</span>
+                        <p id="hud-motivation-text" class="text-[11px] text-cyan-300/80 mt-0.5">
+                            Laju target: -1.18 kg/minggu • Jaga kalori di 1.700–1.800 kkal!
+                        </p>
+                    </div>
+                    <div class="text-right">
+                        <span id="hud-success-percent" class="font-cyber text-xl sm:text-2xl font-black text-cyan-400 drop-shadow-[0_0_8px_rgba(0,243,255,0.6)]">
+                            0.0%
+                        </span>
+                    </div>
+                </div>
+                <div class="w-full h-4 rounded-full bg-slate-900 border border-cyan-500/30 p-0.5 overflow-hidden">
+                    <div id="hud-progress-bar" class="h-full rounded-full bg-gradient-to-r from-cyan-400 via-pink-500 to-lime-400 transition-all duration-500 shadow-[0_0_12px_rgba(0,243,255,0.8)]" style="width: 2%;"></div>
+                </div>
+                <div class="flex justify-between text-[10px] font-mono text-slate-500">
+                    <span>START: 92 KG (43")</span>
+                    <span>MILESTONE: 82 KG</span>
+                    <span>GOAL: 73 KG (31.5")</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVIGASI TAB MOBILE-FRIENDLY -->
+        <nav class="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-[#0b1021] border border-slate-800">
+            <button onclick="switchTab('kalori')" id="tab-btn-kalori" class="tab-btn py-2.5 px-3 rounded-xl font-cyber text-xs font-bold tracking-wider transition-all bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-neon-cyan flex items-center justify-center gap-2">
+                <i class="fa-solid fa-utensils"></i>
+                <span>KALORI</span>
+            </button>
+            <button onclick="switchTab('progres')" id="tab-btn-progres" class="tab-btn py-2.5 px-3 rounded-xl font-cyber text-xs font-bold tracking-wider transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2">
+                <i class="fa-solid fa-weight-scale"></i>
+                <span>TIMBANGAN</span>
+            </button>
+            <button onclick="switchTab('misi')" id="tab-btn-misi" class="tab-btn py-2.5 px-3 rounded-xl font-cyber text-xs font-bold tracking-wider transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2">
+                <i class="fa-solid fa-dumbbell"></i>
+                <span>PANDUAN</span>
+            </button>
+        </nav>
+
+        <!-- TAB 1: KALKULATOR & LOG KALORI HARIAN -->
+        <div id="tab-kalori" class="space-y-5">
+            
+            <!-- Ringkasan Kuota Kalori & Protein Hari Ini -->
+            <section id="calorie-status-card" class="rounded-2xl bg-[#0b1021] border border-cyan-500/30 p-4 sm:p-5 transition-all">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-cyber text-xs sm:text-sm font-bold text-white tracking-wider">
+                        KUOTA ENERGI HARIAN
+                    </h3>
+                    <button onclick="resetTodayFood()" class="text-[11px] font-mono text-slate-400 hover:text-pink-400 transition flex items-center gap-1 px-2 py-1 rounded-lg bg-slate-900 border border-slate-700">
+                        <i class="fa-solid fa-rotate-right"></i> Reset Hari Ini
+                    </button>
+                </div>
+
+                <!-- Bar Kalori -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-baseline mb-1.5">
+                        <div>
+                            <span id="cal-consumed" class="font-mono text-2xl sm:text-3xl font-extrabold text-cyan-400">9</span>
+                            <span class="font-mono text-xs text-slate-400">/ 1.750 kkal (Maks 1.800)</span>
+                        </div>
+                        <div class="text-right">
+                            <span id="cal-remaining-label" class="text-[11px] font-mono text-slate-400 block">Sisa Kuota</span>
+                            <span id="cal-remaining" class="font-mono text-base sm:text-lg font-bold text-lime-400">1.741 kkal</span>
+                        </div>
+                    </div>
+                    <div class="w-full h-3.5 rounded-full bg-slate-900 border border-slate-700 overflow-hidden">
+                        <div id="cal-progress-bar" class="h-full rounded-full bg-gradient-to-r from-cyan-400 to-lime-400 transition-all duration-300" style="width: 1%;"></div>
+                    </div>
+                    <p id="cal-warning-msg" class="hidden mt-2 text-xs font-mono text-red-400 bg-red-950/50 border border-red-500/40 rounded-lg px-3 py-1.5">
+                        <i class="fa-solid fa-triangle-exclamation mr-1"></i> PERINGATAN: Melebihi batas 1.800 kkal! Stop makan berat hari ini & perbanyak air putih.
+                    </p>
+                </div>
+
+                <!-- Bar Protein -->
+                <div>
+                    <div class="flex justify-between items-baseline mb-1">
+                        <span class="text-xs font-mono text-pink-400 font-bold">
+                            <i class="fa-solid fa-shield-halved mr-1"></i>PROTEIN (PENGUNCI OTOT)
+                        </span>
+                        <span class="font-mono text-xs text-slate-300">
+                            <strong id="prot-consumed" class="text-pink-400 text-sm">0.1</strong> / 135 gram
+                        </span>
+                    </div>
+                    <div class="w-full h-2.5 rounded-full bg-slate-900 border border-slate-700 overflow-hidden">
+                        <div id="prot-progress-bar" class="h-full rounded-full bg-gradient-to-r from-pink-500 to-purple-500 transition-all duration-300" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Preset Menu Hemat (Sekali Klik Tambah) -->
+            <section class="rounded-2xl bg-[#0b1021] border border-slate-800 p-4 sm:p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <h3 class="font-cyber text-xs sm:text-sm font-bold text-cyan-400 tracking-wider">
+                            PILIH MENU CEPAT (KLIK UNTUK TAMBAH)
+                        </h3>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Takaran disesuaikan untuk diet hemat & tinggi protein</p>
+                    </div>
+                </div>
+
+                <div id="preset-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                    <!-- Di-render lewat JS -->
+                </div>
+            </section>
+
+            <!-- Input Custom Makanan / Lauk -->
+            <section class="rounded-2xl bg-[#0b1021] border border-pink-500/30 p-4 sm:p-5">
+                <h3 class="font-cyber text-xs sm:text-sm font-bold text-pink-400 tracking-wider mb-3">
+                    <i class="fa-solid fa-plus-circle mr-1"></i> INPUT MAKANAN / LAUK LAINNYA
+                </h3>
+                <form id="custom-food-form" class="space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div class="sm:col-span-2">
+                            <label class="block text-[11px] font-mono text-slate-400 mb-1">Nama Makanan / Lauk</label>
+                            <input type="text" id="food-name" required placeholder="Contoh: Nasi 1.5 centong + Lele goreng" class="w-full rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 focus:outline-none px-3.5 py-2.5 text-sm text-white placeholder-slate-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-mono text-slate-400 mb-1">Porsi / Jumlah</label>
+                            <input type="number" id="food-qty" value="1" min="0.5" step="0.5" required class="w-full rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 focus:outline-none px-3.5 py-2.5 text-sm font-mono text-white">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-mono text-slate-400 mb-1">Kalori per Porsi (kkal)</label>
+                            <input type="number" id="food-cal" required min="0" placeholder="Misal: 250" class="w-full rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 focus:outline-none px-3.5 py-2.5 text-sm font-mono text-white placeholder-slate-500">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-mono text-slate-400 mb-1">Protein per Porsi (gram)</label>
+                            <input type="number" id="food-prot" value="0" min="0" step="0.1" placeholder="Misal: 18" class="w-full rounded-xl bg-slate-900 border border-slate-700 focus:border-cyan-400 focus:outline-none px-3.5 py-2.5 text-sm font-mono text-white placeholder-slate-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-cyber font-bold text-xs tracking-wider shadow-neon-cyan transition active:scale-[0.99]">
+                        + TAMBAHKAN KE LOG HARI INI
+                    </button>
+                </form>
+            </section>
+
+            <!-- Daftar Makanan yang Sudah Masuk Hari Ini -->
+            <section class="rounded-2xl bg-[#0b1021] border border-slate-800 p-4 sm:p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-cyber text-xs sm:text-sm font-bold text-white tracking-wider">
+                        LOG MAKANAN HARI INI (<span id="log-count" class="text-cyan-400">1</span>)
+                    </h3>
+                    <span class="text-[11px] font-mono text-slate-400">Otomatis tersimpan</span>
+                </div>
+                <div id="food-log-list" class="space-y-2.5">
+                    <!-- Item log di-render lewat JS -->
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: UPDATE TIMBANGAN, LINGKAR PINGGANG & ESTIMASI KEBERHASILAN -->
+        <div id="tab-progres" class="hidden space-y-5">
+            <section class="rounded-2xl bg-[#0b1021] border border-lime-400/30 p-4 sm:p-5 shadow-neon-lime">
+                <h3 class="font-cyber text-xs sm:text-sm font-bold text-lime-400 tracking-wider mb-1">
+                    UPDATE PROGRES MINGGUAN
+                </h3>
+                <p class="text-xs text-slate-400 mb-4">
+                    Timbang berat badan & ukur lingkar pinggang setiap 1 minggu sekali di pagi hari setelah bangun tidur (sebelum makan/minum).
+                </p>
+
+                <form id="progress-update-form" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-mono text-cyan-300 mb-1.5">Berat Badan Saat Ini (kg)</label>
+                            <input type="number" id="input-weight" step="0.1" min="50" max="150" value="92.0" required class="w-full rounded-xl bg-slate-900 border border-cyan-500/40 focus:border-cyan-400 focus:outline-none px-4 py-3 text-lg font-mono font-bold text-white">
+                            <p class="text-[11px] font-mono text-slate-500 mt-1">Awal: 92.0 kg • Target: 73.0 kg</p>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-mono text-pink-300 mb-1.5">Lingkar Pinggang Saat Ini (inci)</label>
+                            <input type="number" id="input-waist" step="0.1" min="25" max="60" value="43.0" required class="w-full rounded-xl bg-slate-900 border border-pink-500/40 focus:border-pink-400 focus:outline-none px-4 py-3 text-lg font-mono font-bold text-white">
+                            <p class="text-[11px] font-mono text-slate-500 mt-1">Awal: 43.0" (109 cm) • Target: 31.5" (80 cm)</p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-mono text-slate-300 mb-1.5">Kecepatan Rata-rata Penurunan Mingguan</label>
+                        <select id="input-pace" class="w-full rounded-xl bg-slate-900 border border-slate-700 focus:border-lime-400 focus:outline-none px-3.5 py-2.5 text-sm font-mono text-white">
+                            <option value="1.18">Mode Agresif (1.18 kg/minggu — Target Pas Habis Lebaran)</option>
+                            <option value="1.0">Mode Konsisten (1.0 kg/minggu — Defisit 1.750 kkal + Lompat Tali)</option>
+                            <option value="0.75">Mode Santai (0.75 kg/minggu — Defisit 2.000 kkal)</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-lime-400 to-emerald-500 hover:from-lime-300 hover:to-emerald-400 text-slate-950 font-cyber font-bold text-xs tracking-wider shadow-neon-lime transition">
+                        UPDATE STATUS & HITUNG ULANG ESTIMASI
+                    </button>
+                </form>
+            </section>
+
+            <!-- Analisis Detail Transformasi -->
+            <section class="rounded-2xl bg-[#0b1021] border border-slate-800 p-4 sm:p-5 space-y-3">
+                <h3 class="font-cyber text-xs sm:text-sm font-bold text-white tracking-wider">
+                    ANALISIS PROYEKSI TARGET
+                </h3>
+                <div class="grid grid-cols-2 gap-3 font-mono text-xs">
+                    <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <span class="text-slate-400 block">Status BMI Saat Ini</span>
+                        <span id="detail-bmi" class="text-base font-bold text-amber-400 mt-1 block">30.7 (Obesitas II)</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <span class="text-slate-400 block">Pinggang dalam CM</span>
+                        <span id="detail-waist-cm" class="text-base font-bold text-pink-400 mt-1 block">109.2 cm</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <span class="text-slate-400 block">Progres Lingkar Pinggang</span>
+                        <span id="detail-waist-percent" class="text-base font-bold text-cyan-400 mt-1 block">0.0% (Sisa 11.5")</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-900/90 border border-slate-800">
+                        <span class="text-slate-400 block">Target Milestone Berikutnya</span>
+                        <span id="detail-next-milestone" class="text-base font-bold text-lime-400 mt-1 block">87.0 kg</span>
+                    </div>
+                </div>
+
+                <!-- Riwayat Catatan Berat Badan -->
+                <div class="pt-2">
+                    <h4 class="text-xs font-mono text-slate-400 mb-2">RIWAYAT CATATAN TIMBANGAN:</h4>
+                    <div id="weight-history-list" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                        <!-- Di-render lewat JS -->
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: CHECKLIST HARIAN & PANDUAN LATIHAN -->
+        <div id="tab-misi" class="hidden space-y-5">
+            <!-- Daily Habits Checklist -->
+            <section class="rounded-2xl bg-[#0b1021] border border-cyan-500/30 p-4 sm:p-5">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="font-cyber text-xs sm:text-sm font-bold text-cyan-400 tracking-wider">
+                        CHECKLIST DISIPLIN HARIAN
+                    </h3>
+                    <span id="habit-score" class="font-mono text-xs font-bold text-lime-400">0/6 SELESAI</span>
+                </div>
+                <div id="habit-list" class="space-y-2.5">
+                    <!-- Di-render lewat JS -->
+                </div>
+            </section>
+
+            <!-- Panduan Latihan & Pantangan Ringkas -->
+            <section class="rounded-2xl bg-[#0b1021] border border-slate-800 p-4 sm:p-5 space-y-4">
+                <div>
+                    <h3 class="font-cyber text-xs sm:text-sm font-bold text-pink-400 tracking-wider mb-2">
+                        <i class="fa-solid fa-fire mr-1"></i> PROGRAM LATIHAN HARI LIBUR (35 MENIT)
+                    </h3>
+                    <ul class="space-y-2 text-xs text-slate-300 font-mono">
+                        <li class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between">
+                            <span>1. Push-up / Incline Push-up</span>
+                            <span class="text-cyan-400">3 set x 8-12 rep</span>
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between">
+                            <span>2. Bodyweight Squat</span>
+                            <span class="text-cyan-400">3 set x 12-15 rep</span>
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between">
+                            <span>3. Lying Leg Raises (Perut Bawah)</span>
+                            <span class="text-cyan-400">3 set x 12 rep</span>
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between">
+                            <span>4. Plank + Stomach Vacuum</span>
+                            <span class="text-cyan-400">3 set x 30-45 dtk</span>
+                        </li>
+                        <li class="p-2.5 rounded-xl bg-slate-900 border border-slate-800 flex justify-between">
+                            <span>5. Lompat Tali Interval (30s lompat / 30s jeda)</span>
+                            <span class="text-lime-400">12-15 Ronde</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="font-cyber text-xs sm:text-sm font-bold text-red-400 tracking-wider mb-2">
+                        <i class="fa-solid fa-ban mr-1"></i> PANTANGAN WAJIB (ANTI GAGAL)
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
+                        <div class="p-2.5 rounded-xl bg-red-950/20 border border-red-500/20">
+                            <strong class="text-red-400 block">0 Kalori Cair:</strong> Stop es teh manis, kopi sachet, & minuman kemasan.
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-red-950/20 border border-red-500/20">
+                            <strong class="text-red-400 block">Stop Gorengan & Kerupuk:</strong> 2 gorengan + 2 kerupuk = ~400 kkal.
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-red-950/20 border border-red-500/20">
+                            <strong class="text-red-400 block">Batas Nasi:</strong> Bertahap dari 4 centong turun ke 1.5 centong/makan.
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-red-950/20 border border-red-500/20">
+                            <strong class="text-red-400 block">Jangan Balas Dendam:</strong> Hindari cheat day brutal saat hari libur.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC & STATE MANAGEMENT -->
+    <script>
+        // Konstanta Target Pengguna
+        const START_WEIGHT = 92.0;
+        const TARGET_WEIGHT = 73.0;
+        const START_WAIST = 43.0; // inci
+        const TARGET_WAIST = 31.5; // inci (rata-rata 31-32 inci)
+        const HEIGHT_M = 1.73;
+        const DAILY_CAL_TARGET = 1750;
+        const DAILY_CAL_MAX = 1800;
+        const DAILY_PROT_TARGET = 135;
+
+        // Preset Menu Hemat Indonesia
+        const PRESET_FOODS = [
+            { name: "Nasi Putih (1 Centong)", cal: 155, prot: 3.0, icon: "🍚", tag: "Karbo" },
+            { name: "Nasi Putih (1.5 Centong)", cal: 230, prot: 4.5, icon: "🍚", tag: "Target" },
+            { name: "Telur Rebus / Ceplok Air", cal: 75, prot: 6.5, icon: "🥚", tag: "Protein" },
+            { name: "Telur Dadar (Minyak)", cal: 110, prot: 6.5, icon: "🍳", tag: "Protein" },
+            { name: "Dada Ayam Bakar/Rebus (100g)", cal: 165, prot: 31.0, icon: "🍗", tag: "Super" },
+            { name: "Ayam Goreng Paha/Sayap", cal: 220, prot: 18.0, icon: "🍗", tag: "Lauk" },
+            { name: "Ikan Tongkol / Kembung", cal: 170, prot: 24.0, icon: "🐟", tag: "Super" },
+            { name: "Tempe Bacem/Oseng (2 ptg)", cal: 120, prot: 10.0, icon: "🟫", tag: "Hemat" },
+            { name: "Tahu Putih (2 ptg)", cal: 80, prot: 8.0, icon: "⬜", tag: "Hemat" },
+            { name: "Sayur Bening / Tumis (1 mgk)", cal: 45, prot: 2.0, icon: "🥬", tag: "Volume" },
+            { name: "Pisang (1 Buah)", cal: 90, prot: 1.0, icon: "🍌", tag: "Camilan" },
+            { name: "Rambutan (1 Butir)", cal: 9, prot: 0.1, icon: "🍒", tag: "Buah" },
+            { name: "Air Putih / Kopi Hitam Pahit", cal: 0, prot: 0.0, icon: "💧", tag: "0 Kkal" }
+        ];
+
+        // Daftar Kebiasaan Harian
+        const DAILY_HABITS = [
+            { id: "h1", text: "Skip Sarapan (Puasa pagi sampai jam 12.00 siang)" },
+            { id: "h2", text: "Nasi maksimal sesuai porsi target (menuju 1.5 centong)" },
+            { id: "h3", text: "0 Minuman Manis (Hanya air putih, kopi hitam pahit, teh tawar)" },
+            { id: "h4", text: "0 Gorengan Tepung, Kerupuk & Mi Instan" },
+            { id: "h5", text: "Minum Air Putih minimal 2 Liter hari ini" },
+            { id: "h6", text: "Latihan fisik / Lompat Tali / Stomach Vacuum 3x" }
+        ];
+
+        // State Aplikasi (Disimpan di localStorage)
+        let appState = {
+            currentWeight: 92.0,
+            currentWaist: 43.0,
+            weeklyPace: 1.18,
+            foodLog: [
+                { id: 1, name: "Rambutan (1 Butir)", qty: 1, cal: 9, prot: 0.1, time: "09:00" }
+            ],
+            habitsCompleted: {},
+            weightHistory: [
+                { date: "23 Nov 2026", weight: 92.0, waist: 43.0, note: "Start Awal Misi" }
+            ]
+        };
+
+        // Load Data dari localStorage jika tersedia
+        function loadState() {
+            try {
+                const saved = localStorage.getItem('cyberfit_73_state');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    appState = { ...appState, ...parsed };
+                }
+            } catch (e) {
+                console.error("Gagal memuat data lokal:", e);
+            }
+        }
+
+        // Simpan Data ke localStorage
+        function saveState() {
+            try {
+                localStorage.setItem('cyberfit_73_state', JSON.stringify(appState));
+            } catch (e) {
+                console.error("Gagal menyimpan data lokal:", e);
+            }
+        }
+
+        // Menampilkan Toast Notifikasi Neon (Pengganti alert)
+        function showToast(message, type = 'cyan') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let borderClass = 'border-cyan-400 text-cyan-300 shadow-neon-cyan';
+            if (type === 'lime') borderClass = 'border-lime-400 text-lime-300 shadow-neon-lime';
+            if (type === 'magenta') borderClass = 'border-pink-500 text-pink-300 shadow-neon-magenta';
+            if (type === 'danger') borderClass = 'border-red-500 text-red-300 shadow-neon-danger';
+
+            toast.className = `pointer-events-auto rounded-xl bg-[#0b1021]/95 border ${borderClass} px-4 py-3 text-xs font-mono backdrop-blur-md transition-all duration-300 transform translate-x-0`;
+            toast.innerHTML = `<div class="flex items-center justify-between gap-2"><span>${message}</span></div>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(20px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 2600);
+        }
+
+        // Render Preset Menu
+        function renderPresets() {
+            const grid = document.getElementById('preset-grid');
+            grid.innerHTML = PRESET_FOODS.map((item, idx) => `
+                <button onclick="addPresetFood(${idx})" class="text-left p-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-cyan-400/60 transition active:scale-95 flex flex-col justify-between group">
+                    <div class="flex items-start justify-between gap-1">
+                        <span class="text-base">${item.icon}</span>
+                        <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">${item.tag}</span>
+                    </div>
+                    <p class="text-xs font-semibold text-slate-200 group-hover:text-white mt-1.5 line-clamp-1">${item.name}</p>
+                    <div class="flex items-center justify-between mt-1 text-[11px] font-mono">
+                        <span class="text-cyan-400 font-bold">${item.cal} kkal</span>
+                        <span class="text-pink-400">${item.prot}g P</span>
+                    </div>
+                </button>
+            `).join('');
+        }
+
+        // Tambah dari Preset
+        function addPresetFood(index) {
+            const item = PRESET_FOODS[index];
+            const now = new Date();
+            const timeStr = now.toTimeString().slice(0, 5);
+
+            appState.foodLog.unshift({
+                id: Date.now() + Math.random(),
+                name: item.name,
+                qty: 1,
+                cal: item.cal,
+                prot: item.prot,
+                time: timeStr
+            });
+
+            saveState();
+            updateAllUI();
+            showToast(`+ ${item.name} (${item.cal} kkal)`, 'cyan');
+        }
+
+        // Tambah Custom Food
+        document.getElementById('custom-food-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('food-name');
+            const qtyInput = document.getElementById('food-qty');
+            const calInput = document.getElementById('food-cal');
+            const protInput = document.getElementById('food-prot');
+
+            const name = nameInput.value.trim();
+            const qty = parseFloat(qtyInput.value) || 1;
+            const unitCal = parseFloat(calInput.value) || 0;
+            const unitProt = parseFloat(protInput.value) || 0;
+
+            if (!name) return;
+
+            const totalCal = Math.round(unitCal * qty);
+            const totalProt = Math.round((unitProt * qty) * 10) / 10;
+            const timeStr = new Date().toTimeString().slice(0, 5);
+
+            appState.foodLog.unshift({
+                id: Date.now() + Math.random(),
+                name: qty !== 1 ? `${name} (${qty}x)` : name,
+                qty: qty,
+                cal: totalCal,
+                prot: totalProt,
+                time: timeStr
+            });
+
+            nameInput.value = '';
+            qtyInput.value = '1';
+            calInput.value = '';
+            protInput.value = '0';
+
+            saveState();
+            updateAllUI();
+            showToast(`Ditambahkan: ${name} (${totalCal} kkal)`, 'lime');
+        });
+
+        // Hapus Item Makanan
+        function removeFoodItem(id) {
+            appState.foodLog = appState.foodLog.filter(item => item.id !== id);
+            saveState();
+            updateAllUI();
+            showToast('Item makanan dihapus', 'magenta');
+        }
+
+        // Reset Log Makanan Hari Ini
+        function resetTodayFood() {
+            appState.foodLog = [];
+            saveState();
+            updateAllUI();
+            showToast('Log makanan hari ini dikosongkan', 'magenta');
+        }
+
+        // Update Progres Berat & Pinggang
+        document.getElementById('progress-update-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const newWeight = parseFloat(document.getElementById('input-weight').value);
+            const newWaist = parseFloat(document.getElementById('input-waist').value);
+            const newPace = parseFloat(document.getElementById('input-pace').value);
+
+            if (isNaN(newWeight) || isNaN(newWaist)) return;
+
+            appState.currentWeight = newWeight;
+            appState.currentWaist = newWaist;
+            appState.weeklyPace = newPace;
+
+            const todayStr = new Date().toLocaleDateString('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric'
+            });
+
+            appState.weightHistory.unshift({
+                date: todayStr,
+                weight: newWeight,
+                waist: newWaist,
+                note: newWeight < START_WEIGHT ? `Turun ${(START_WEIGHT - newWeight).toFixed(1)} kg` : "Update"
+            });
+
+            saveState();
+            updateAllUI();
+            showToast(`Progres diperbarui! BB: ${newWeight} kg | Pinggang: ${newWaist}"`, 'lime');
+        });
+
+        // Toggle Habit Checklist
+        function toggleHabit(id) {
+            appState.habitsCompleted[id] = !appState.habitsCompleted[id];
+            saveState();
+            renderHabits();
+        }
+
+        // Render Checklist Kebiasaan
+        function renderHabits() {
+            const list = document.getElementById('habit-list');
+            let completedCount = 0;
+
+            list.innerHTML = DAILY_HABITS.map(h => {
+                const checked = !!appState.habitsCompleted[h.id];
+                if (checked) completedCount++;
+                return `
+                    <label onclick="toggleHabit('${h.id}')" class="flex items-center gap-3 p-3 rounded-xl border cursor-pointer transition select-none ${checked ? 'bg-lime-500/10 border-lime-400/50 text-white' : 'bg-slate-900/90 border-slate-800 text-slate-300 hover:border-slate-600'}">
+                        <div class="w-5 h-5 rounded-md flex items-center justify-center border ${checked ? 'bg-lime-400 border-lime-400 text-slate-950' : 'border-slate-600'}">
+                            ${checked ? '<i class="fa-solid fa-check text-xs font-bold"></i>' : ''}
+                        </div>
+                        <span class="text-xs font-medium ${checked ? 'line-through text-slate-400' : ''}">${h.text}</span>
+                    </label>
+                `;
+            }).join('');
+
+            document.getElementById('habit-score').textContent = `${completedCount}/${DAILY_HABITS.length} SELESAI`;
+        }
+
+        // Kalkulasi & Pembaruan Seluruh Tampilan UI
+        function updateAllUI() {
+            // 1. Hitung Kalori & Protein Hari Ini
+            const totalCal = appState.foodLog.reduce((sum, item) => sum + item.cal, 0);
+            const totalProt = appState.foodLog.reduce((sum, item) => sum + item.prot, 0);
+            const remainingCal = DAILY_CAL_TARGET - totalCal;
+
+            document.getElementById('cal-consumed').textContent = totalCal.toLocaleString('id-ID');
+            document.getElementById('prot-consumed').textContent = totalProt.toFixed(1);
+            document.getElementById('log-count').textContent = appState.foodLog.length;
+
+            const calRemEl = document.getElementById('cal-remaining');
+            const calStatusCard = document.getElementById('calorie-status-card');
+            const calWarning = document.getElementById('cal-warning-msg');
+            const calBar = document.getElementById('cal-progress-bar');
+
+            const calPercent = Math.min(100, Math.round((totalCal / DAILY_CAL_TARGET) * 100));
+            calBar.style.width = `${calPercent}%`;
+
+            if (totalCal > DAILY_CAL_MAX) {
+                calRemEl.textContent = `Over +${(totalCal - DAILY_CAL_MAX).toLocaleString('id-ID')} kkal`;
+                calRemEl.className = 'font-mono text-base sm:text-lg font-bold text-red-400';
+                calStatusCard.classList.add('border-red-500', 'shadow-neon-danger');
+                calStatusCard.classList.remove('border-cyan-500/30');
+                calBar.className = 'h-full rounded-full bg-red-500 transition-all duration-300';
+                calWarning.classList.remove('hidden');
+            } else {
+                calRemEl.textContent = `${Math.max(0, remainingCal).toLocaleString('id-ID')} kkal`;
+                calRemEl.className = 'font-mono text-base sm:text-lg font-bold text-lime-400';
+                calStatusCard.classList.remove('border-red-500', 'shadow-neon-danger');
+                calStatusCard.classList.add('border-cyan-500/30');
+                calBar.className = 'h-full rounded-full bg-gradient-to-r from-cyan-400 to-lime-400 transition-all duration-300';
+                calWarning.classList.add('hidden');
+            }
+
+            const protPercent = Math.min(100, Math.round((totalProt / DAILY_PROT_TARGET) * 100));
+            document.getElementById('prot-progress-bar').style.width = `${protPercent}%`;
+
+            // 2. Render Daftar Makanan Hari Ini
+            const listEl = document.getElementById('food-log-list');
+            if (appState.foodLog.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center py-6 rounded-xl bg-slate-900/50 border border-dashed border-slate-800">
+                        <p class="text-xs font-mono text-slate-400">Belum ada makanan tercatat hari ini.</p>
+                        <p class="text-[11px] text-slate-500 mt-1">Pilih menu cepat di atas atau input manual saat jam makan.</p>
+                    </div>
+                `;
+            } else {
+                listEl.innerHTML = appState.foodLog.map(item => `
+                    <div class="flex items-center justify-between p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-slate-700 transition">
+                        <div class="pr-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">${item.time}</span>
+                                <h4 class="text-xs sm:text-sm font-semibold text-white">${item.name}</h4>
+                            </div>
+                            <div class="flex items-center gap-3 mt-1 text-[11px] font-mono">
+                                <span class="text-cyan-400 font-bold">${item.cal} kkal</span>
+                                <span class="text-pink-400">Protein: ${item.prot}g</span>
+                            </div>
+                        </div>
+                        <button onclick="removeFoodItem(${item.id})" title="Hapus" class="w-8 h-8 rounded-lg bg-red-500/10 hover:bg-red-500/25 text-red-400 border border-red-500/30 flex items-center justify-center transition">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+
+            // 3. Hitung Persentase Keberhasilan & Estimasi Tanggal Tercapai
+            const curW = appState.currentWeight;
+            const curWaist = appState.currentWaist;
+            const totalToLose = START_WEIGHT - TARGET_WEIGHT; // 19.0 kg
+            const lostSoFar = Math.max(0, START_WEIGHT - curW);
+            const remainingKg = Math.max(0, curW - TARGET_WEIGHT);
+
+            // Persentase gabungan (70% dari berat badan, 30% dari lingkar pinggang)
+            const weightPct = Math.min(100, Math.max(0, (lostSoFar / totalToLose) * 100));
+            const waistLost = Math.max(0, START_WAIST - curWaist);
+            const waistTotalToLose = START_WAIST - TARGET_WAIST; // 11.5 inci
+            const waistPct = Math.min(100, Math.max(0, (waistLost / waistTotalToLose) * 100));
+            
+            const overallSuccessPct = (weightPct * 0.7) + (waistPct * 0.3);
+
+            // Faktor penyesuaian laju berdasarkan kepatuhan kalori hari ini
+            let effectivePace = appState.weeklyPace;
+            if (totalCal > DAILY_CAL_MAX) {
+                effectivePace = Math.max(0.4, effectivePace * 0.75);
+            }
+
+            const weeksNeeded = remainingKg / effectivePace;
+            const daysNeeded = Math.ceil(weeksNeeded * 7);
+            const estDate = new Date();
+            estDate.setDate(estDate.getDate() + daysNeeded);
+
+            const estDateStr = remainingKg <= 0 
+                ? "TARGET TERCAPAI!" 
+                : estDate.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+
+            // Update HUD Elements
+            document.getElementById('hud-current-weight').textContent = curW.toFixed(1);
+            document.getElementById('hud-current-waist').textContent = curWaist.toFixed(1);
+            document.getElementById('hud-remaining-kg').textContent = remainingKg.toFixed(1);
+            document.getElementById('hud-lost-kg').textContent = `Turun: ${lostSoFar.toFixed(1)} kg`;
+            document.getElementById('hud-est-date').textContent = estDateStr;
+            document.getElementById('hud-est-weeks').textContent = remainingKg <= 0 ? "Misi Selesai!" : `~${weeksNeeded.toFixed(1)} Minggu lagi`;
+            document.getElementById('hud-success-percent').textContent = `${overallSuccessPct.toFixed(1)}%`;
+            
+            const barWidth = Math.max(2, Math.min(100, overallSuccessPct));
+            document.getElementById('hud-progress-bar').style.width = `${barWidth}%`;
+
+            // Update Detail di Tab Timbangan
+            document.getElementById('input-weight').value = curW;
+            document.getElementById('input-waist').value = curWaist;
+            document.getElementById('input-pace').value = appState.weeklyPace;
+
+            const bmi = curW / (HEIGHT_M * HEIGHT_M);
+            let bmiCat = "Normal";
+            if (bmi >= 30) bmiCat = "Obesitas II";
+            else if (bmi >= 25) bmiCat = "Obesitas I";
+            else if (bmi >= 23) bmiCat = "Overweight";
+
+            document.getElementById('detail-bmi').textContent = `${bmi.toFixed(1)} (${bmiCat})`;
+            document.getElementById('detail-waist-cm').textContent = `${(curWaist * 2.54).toFixed(1)} cm`;
+            document.getElementById('detail-waist-percent').textContent = `${waistPct.toFixed(1)}% (Sisa ${Math.max(0, curWaist - TARGET_WAIST).toFixed(1)}")`;
+            
+            const nextMilestone = curW > 87 ? 87.0 : (curW > 82 ? 82.0 : (curW > 77 ? 77.0 : 73.0));
+            document.getElementById('detail-next-milestone').textContent = `${nextMilestone.toFixed(1)} kg`;
+
+            // Render Riwayat Berat Badan
+            const histList = document.getElementById('weight-history-list');
+            histList.innerHTML = appState.weightHistory.map(h => `
+                <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-xs font-mono">
+                    <div>
+                        <span class="text-slate-400">${h.date}</span>
+                        <span class="ml-2 text-cyan-400 font-bold">${h.weight.toFixed(1)} kg</span>
+                        <span class="ml-2 text-pink-400">${h.waist.toFixed(1)}"</span>
+                    </div>
+                    <span class="text-[11px] text-lime-400">${h.note}</span>
+                </div>
+            `).join('');
+        }
+
+        // Navigasi Tab
+        function switchTab(tabName) {
+            ['kalori', 'progres', 'misi'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-btn-${t}`);
+                btn.className = 'tab-btn py-2.5 px-3 rounded-xl font-cyber text-xs font-bold tracking-wider transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2';
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            activeBtn.className = 'tab-btn py-2.5 px-3 rounded-xl font-cyber text-xs font-bold tracking-wider transition-all bg-cyan-500/20 text-cyan-300 border border-cyan-400/50 shadow-neon-cyan flex items-center justify-center gap-2';
+        }
+
+        // Inisialisasi saat halaman dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            const now = new Date();
+            document.getElementById('current-date-badge').textContent = now.toLocaleDateString('id-ID', {
+                day: '2-digit', month: 'short', year: 'numeric'
+            }).toUpperCase();
+
+            loadState();
+            renderPresets();
+            renderHabits();
+            updateAllUI();
+        });
+    </script>
+</body>
+</html>
